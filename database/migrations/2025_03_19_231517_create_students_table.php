@@ -12,8 +12,10 @@ return new class extends Migration {
             $table->string('name', 100);
             $table->date('date_of_birth');
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
+            $table->boolean('is_guest')->default(false);
+            $table->string('guest_session_token')->nullable();
+            $table->softDeletes();
             $table->timestamps();
-            $table->boolean('is_deleted')->default(false);
         });
     }
 

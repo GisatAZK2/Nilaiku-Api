@@ -20,8 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Tambahkan jika ingin role bisa diisi saat registrasi
-        'is_guest',
+        'role',
     ];
 
     /**

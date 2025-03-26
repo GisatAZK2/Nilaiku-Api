@@ -12,8 +12,8 @@ return new class extends Migration {
             $table->dateTime('prediction_date');
             $table->decimal('predicted_score', 5, 2);
             $table->text('recommendation');
+            $table->softDeletes();
             $table->timestamps();
-            $table->boolean('is_deleted')->default(false);
         });
     }
 

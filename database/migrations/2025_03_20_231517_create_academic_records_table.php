@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->decimal('sleep_hours', 5, 2);
             $table->enum('parental_involvement', ['Low', 'Medium', 'High']);
             $table->enum('access_to_resources', ['Low', 'Medium', 'High']);
+            $table->softDeletes();
             $table->timestamps();
-            $table->boolean('is_deleted')->default(false);
         });
     }
 

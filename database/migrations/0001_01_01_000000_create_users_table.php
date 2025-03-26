@@ -17,10 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['siswa', 'admin', 'guest'])->default('siswa');
-            $table->boolean('is_guest')->default(false);
-            $table->string('session_token')->nullable();
-            $table->boolean('is_deleted')->default(false); // Soft delete manual
+            $table->enum('role', ['siswa', 'admin'])->default('siswa');
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

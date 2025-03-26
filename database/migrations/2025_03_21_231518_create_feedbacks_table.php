@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->text('comment');
             $table->decimal('rating', 3, 2);
             $table->dateTime('date');
+            $table->softDeletes();
             $table->timestamps();
-            $table->boolean('is_deleted')->default(false);
         });
     }
 
