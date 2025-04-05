@@ -4,9 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PredictionResult extends Model
+class 
+PredictionResult extends Model
 {
-    protected $guard = ['id'];
+    protected $fillable = [
+        'record_id',
+        'prediction_date',
+        'prediction_score',
+        'recommendation'
+    ];
 
     protected $cast = [
         'prediction_date' => 'datetime',

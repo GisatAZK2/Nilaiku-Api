@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Auth API",
+        "title": "API Nilaiku",
         "version": "1.0"
     },
     "paths": {
@@ -193,12 +193,180 @@
                     }
                 }
             }
+        },
+        "/api/v1/predict": {
+            "post": {
+                "tags": [
+                    "Predict"
+                ],
+                "summary": "Prediksi nilai akademik",
+                "description": "Memprediksi nilai akademik berdasarkan data yang diinput pengguna.",
+                "operationId": "e9fe1bbdbb4736f1cca4bc391c529c65",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "attendance",
+                                    "hours_studied",
+                                    "previous_scores",
+                                    "sleep_hours",
+                                    "tutoring_sessions",
+                                    "peer_influence",
+                                    "motivation_level",
+                                    "teacher_quality",
+                                    "access_to_resources"
+                                ],
+                                "properties": {
+                                    "attendance": {
+                                        "type": "number",
+                                        "example": 90
+                                    },
+                                    "hours_studied": {
+                                        "type": "number",
+                                        "example": 5
+                                    },
+                                    "previous_scores": {
+                                        "type": "number",
+                                        "example": 75
+                                    },
+                                    "sleep_hours": {
+                                        "type": "number",
+                                        "example": 8
+                                    },
+                                    "tutoring_sessions": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "peer_influence": {
+                                        "type": "string",
+                                        "enum": [
+                                            "positive",
+                                            "neutral",
+                                            "negative"
+                                        ],
+                                        "example": "positive"
+                                    },
+                                    "motivation_level": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high"
+                                        ],
+                                        "example": "high"
+                                    },
+                                    "teacher_quality": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high"
+                                        ],
+                                        "example": "medium"
+                                    },
+                                    "access_to_resources": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high"
+                                        ],
+                                        "example": "high"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Prediksi nilai berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "academic_record_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "prediction_result": {
+                                            "properties": {
+                                                "record_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "prediction_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-10-01T12:00:00Z"
+                                                },
+                                                "predicted_score": {
+                                                    "type": "number",
+                                                    "example": 85
+                                                },
+                                                "recommendation": {
+                                                    "type": "string",
+                                                    "example": "Perbanyak belajar."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Kesalahan validasi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Kesalahan validasi"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "attendance": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Attendance harus antara 0 dan 100."
+                                                    }
+                                                },
+                                                "hours_studied": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Hours studied harus berupa angka."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Predict",
+            "description": "Predict"
         }
     ]
 }

@@ -10,7 +10,7 @@ class PredictionService
 
     public function __construct()
     {
-        // URL endpoint model ML (misal Python Flask/FastAPI)
+        // URL endpoint model ML (Flask)
         $this->mlApiUrl = config('services.ml_prediction.url');
         $this->client = new Client();
     }
@@ -18,9 +18,11 @@ class PredictionService
     public function getPrediction(array $inputData)
     {
         try {
+            $jsonInputData = json_encode($inputData);
             $response = $this->client->post($this->mlApiUrl, [
-                'json' => $inputData,
-                'timeout' => 30
+                'body' => $jsonInputData,
+                'timeout' => 30,
+                'headers' => ['Content-Type' => 'application/json']
             ]);
 
             $predictionResult = json_decode($response->getBody(), true);
@@ -32,7 +34,7 @@ class PredictionService
             return $predictionResult;
 
         } catch (\Exception $e) {
-            \Log::error('ML Prediction Error: ' . $e->getMessage());
+            \Log::error('Kesalahan Prediksi ML: ' . $e->getMessage());
             throw new \Exception('Gagal melakukan prediksi');
         }
     }

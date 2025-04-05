@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * @OA\Info(title="Auth API", version="1.0")
- */
-
 class AuthController extends Controller
 {
     /**

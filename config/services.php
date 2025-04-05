@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'ml_prediction' => [
+        'url' => env('ML_PREDICTION_URL', 'http://127.0.0.1:5001/predict'),
+    ],
 
 ];
