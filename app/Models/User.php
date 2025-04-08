@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -49,5 +50,15 @@ class User extends Authenticatable
     public function student()
     {
         return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        if ($this->role !== 'admin') {
+            session()->flash('authError', 'Akun Anda tidak memiliki akses ke panel admin.');
+            return false;
+        }
+    
+        return true;
     }
 }
