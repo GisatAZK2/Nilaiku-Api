@@ -29,7 +29,7 @@ EXPOSE 8000
 
 CMD php artisan config:clear && \
     php artisan config:cache && \
-    php artisan migrate:fresh --force && \
+    php artisan migrate --force && \
     php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force && \
     php artisan l5-swagger:generate && \
     apache2-foreground
