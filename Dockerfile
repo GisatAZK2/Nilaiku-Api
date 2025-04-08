@@ -1,32 +1,31 @@
 FROM php:8.2-apache
 
-# Install PHP extensions yang dibutuhkan Laravel
 RUN apt-get update && apt-get install -y \
-    zip unzip git curl libzip-dev libpng-dev libonig-dev libxml2-dev \
+    git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
-# Enable Apache Rewrite Module
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy semua file ke container
+# Copy project files
 COPY . .
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install dependensi Laravel
+# Install Laravel dependencies
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader -vvv
+RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
 
-# Laravel permissions
+# Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage
 
-# Set ENV dan cache config
-RUN cp .env.example .env \
-    && php artisan config:cache
-
+# Expose port 80
 EXPOSE 80
+
+# Startup command
+CMD php artisan config:cache && apache2-foreground
