@@ -10,7 +10,7 @@
     "env": {
         "APP_ENV": "staging",
         "APP_DEBUG": "true",
-        "APP_URL": "{{ appUrl }}",
+        "APP_URL": "https://api-nilaiku.vercel.app",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -23,4 +23,5 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
     }
+
 }
