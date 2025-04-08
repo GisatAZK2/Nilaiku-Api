@@ -9,8 +9,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www/html
 
 COPY . .
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -29,5 +27,9 @@ RUN chown -R www-data:www-data /var/www/html \
 
 EXPOSE 8000
 
-CMD ["docker-entrypoint.sh"]
-
+CMD php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan migrate --force && \
+    php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force && \
+    php artisan l5-swagger:generate && \
+    apache2-foreground
