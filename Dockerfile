@@ -19,7 +19,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install dependensi Laravel
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
+RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader -vvv
 
 # Laravel permissions
 RUN chown -R www-data:www-data /var/www/html \
