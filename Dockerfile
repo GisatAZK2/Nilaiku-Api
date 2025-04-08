@@ -14,7 +14,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
-RUN php artisan migrate
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 ENV PORT=8000
@@ -30,6 +29,7 @@ EXPOSE 8000
 
 CMD php artisan config:clear && \
     php artisan config:cache && \
+    php artisan migrate --force && \
     php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force && \
     php artisan l5-swagger:generate && \
     apache2-foreground
