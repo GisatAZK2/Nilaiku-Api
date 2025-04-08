@@ -14,6 +14,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
+RUN php artisan migrate
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 ENV PORT=8000
