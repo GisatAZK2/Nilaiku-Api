@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use App\Models\Student;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -45,9 +45,6 @@ class AuthController extends Controller
      *              @OA\Property(property="errors", type="object",
      *                  @OA\Property(property="email", type="array",
      *                      @OA\Items(type="string", example="Email ini sudah terdaftar.")
-     *                  ),
-     *                  @OA\Property(property="password", type="array",
-     *                      @OA\Items(type="string", example="Password sudah pernah digunakan.")
      *                  )
      *              )
      *          )
@@ -59,7 +56,7 @@ class AuthController extends Controller
         $data = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/',
         ]);
 
         $errors = [];
@@ -67,50 +64,41 @@ class AuthController extends Controller
         if (User::where('email', $request->email)->exists()) {
             return response()->json([
                 'message' => 'Validation error',
-                'errors' => [
-                    'email' => ['Email ini sudah terdaftar.']
-                ]
+                'errors'  => [
+                    'email' => ['Email ini sudah terdaftar.'],
+                ],
             ], 422);
         }
 
-    
-        $existingPasswords = User::pluck('password');
-        foreach ($existingPasswords as $hashedPassword) {
-            if (Hash::check($request->password, $hashedPassword)) {
-                $errors['password'] = ['Password sudah pernah digunakan. Gunakan password lain.'];
-                break;
-            }
-        }
-
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             return response()->json([
                 'message' => 'Validation error',
-                'errors' => $errors
+                'errors'  => $errors,
             ], 422);
         }
 
         $user = User::create([
-            'name'    => $data['name'],
-            'email'   => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
-            'role'    => 'siswa'
+            'role'     => 'siswa',
         ]);
 
         if (session()->has('guest_session_token')) {
             Student::where('guest_session_token', session('guest_session_token'))
                 ->update([
-                    'user_id' => $user->id, 
-                    'name' => $data['name'], 
+                    'user_id'  => $user->id,
+                    'name'     => $data['name'],
                     'is_guest' => false,
                     // 'guest_session_token' => null
                 ]);
-                
+
             // session()->forget('guest_session_token');
         }
 
         return response()->json([
-            'message' => 'User registered successfully', 
-            'user' => $user
+            'message' => 'User registered successfully',
+            'user'    => $user,
         ], 201);
     }
 
@@ -138,9 +126,9 @@ class AuthController extends Controller
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="Unauthorized",
+     *          description="Invalid credentials",
      *          @OA\JsonContent(
-     *              @OA\Property(property="error", type="string", example="Unauthorized")
+     *              @OA\Property(property="error", type="string", example="Invalid credentials")
      *          )
      *      )
      * )
@@ -149,13 +137,13 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
         return response()->json([
             'message' => 'Login success',
-            'token' => $token
+            'token'   => $token,
         ], 200);
     }
 }
