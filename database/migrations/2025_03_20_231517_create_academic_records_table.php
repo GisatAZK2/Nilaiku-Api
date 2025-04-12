@@ -8,8 +8,8 @@ return new class extends Migration {
     public function up() {
         Schema::create('academic_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->nullable();
-            $table->foreignId('subject_id')->constrained('subjects')->nullable();
+            $table->foreignId('student_id')->nullable()->constrained('students');
+            $table->foreignId('subject_id')->constrained('subjects');
             $table->decimal('attendance', 5, 2);
             $table->decimal('hours_studied', 5, 2);
             $table->decimal('previous_scores', 5, 2);

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class 
-PredictionResult extends Model
+class PredictionResult extends Model
 {
     protected $fillable = [
         'record_id',
         'prediction_date',
-        'prediction_score',
+        'predicted_score',
         'recommendation'
     ];
 

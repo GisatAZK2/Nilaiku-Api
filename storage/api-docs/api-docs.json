@@ -36,7 +36,12 @@
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "password123"
+                                        "example": "Password@22"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "Password@22"
                                     }
                                 },
                                 "type": "object"
@@ -57,10 +62,6 @@
                                         },
                                         "user": {
                                             "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
                                                 "name": {
                                                     "type": "string",
                                                     "example": "John Doe"
@@ -69,12 +70,28 @@
                                                     "type": "string",
                                                     "example": "john@example.com"
                                                 },
-                                                "role": {
-                                                    "type": "string",
-                                                    "example": "siswa"
+                                                "updated_at": {
+                                                    "type": "date-time",
+                                                    "example": "2025-04-11T08:17:24.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "date-time",
+                                                    "example": "2025-04-11T08:17:24.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "1|Ym1ySoVCLX4vFgPoWW0KwoyzCgeEDnCdna2FcDd3a56e2061"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
                                         }
                                     },
                                     "type": "object"
@@ -99,13 +116,6 @@
                                                     "items": {
                                                         "type": "string",
                                                         "example": "Email ini sudah terdaftar."
-                                                    }
-                                                },
-                                                "password": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "Password sudah pernah digunakan."
                                                     }
                                                 }
                                             },
@@ -146,7 +156,7 @@
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "password123"
+                                        "example": "Password@22"
                                     }
                                 },
                                 "type": "object"
@@ -165,9 +175,13 @@
                                             "type": "string",
                                             "example": "Login success"
                                         },
-                                        "token": {
+                                        "access_token": {
                                             "type": "string",
-                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                            "example": "1|Ym1ySoVCLX4vFgPoWW0KwoyzCgeEDnCdna2FcDd3a56e2061"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
                                         }
                                     },
                                     "type": "object"
@@ -201,13 +215,17 @@
                 ],
                 "summary": "Prediksi nilai akademik",
                 "description": "Memprediksi nilai akademik berdasarkan data yang diinput pengguna.",
-                "operationId": "e9fe1bbdbb4736f1cca4bc391c529c65",
+                "operationId": "9a0c662fc36f0bd2b5d293702dd8ba7e",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
+                                    "name",
+                                    "age",
+                                    "gender",
+                                    "education",
                                     "attendance",
                                     "hours_studied",
                                     "previous_scores",
@@ -219,6 +237,26 @@
                                     "access_to_resources"
                                 ],
                                 "properties": {
+                                    "name": {
+                                        "type": "text",
+                                        "example": "John Doe"
+                                    },
+                                    "age": {
+                                        "type": "number",
+                                        "example": 15
+                                    },
+                                    "gender": {
+                                        "type": "text",
+                                        "example": "male"
+                                    },
+                                    "education": {
+                                        "type": "text",
+                                        "example": "SMK"
+                                    },
+                                    "subject_id": {
+                                        "type": "number",
+                                        "example": 1
+                                    },
                                     "attendance": {
                                         "type": "number",
                                         "example": 90
@@ -283,33 +321,121 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Prediksi nilai berhasil",
+                        "description": "Predicted successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "academic_record_id": {
-                                            "type": "integer",
-                                            "example": 1
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Predicted successfully"
                                         },
-                                        "prediction_result": {
+                                        "student": {
                                             "properties": {
-                                                "record_id": {
+                                                "id": {
                                                     "type": "integer",
                                                     "example": 1
                                                 },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "age": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "male"
+                                                },
+                                                "education": {
+                                                    "type": "string",
+                                                    "example": "SMA"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "record": {
+                                            "properties": {
+                                                "subject_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "input_date": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-04-11T08:31:54.812441Z"
+                                                },
+                                                "attendance": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "hours_studied": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                },
+                                                "previous_scores": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                },
+                                                "sleep_hours": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 0
+                                                },
+                                                "tutoring_sessions": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "peer_influence": {
+                                                    "type": "string",
+                                                    "example": "negative"
+                                                },
+                                                "motivation_level": {
+                                                    "type": "string",
+                                                    "example": "low"
+                                                },
+                                                "teacher_quality": {
+                                                    "type": "string",
+                                                    "example": "low"
+                                                },
+                                                "access_to_resources": {
+                                                    "type": "string",
+                                                    "example": "low"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "prediction_result": {
+                                            "properties": {
                                                 "prediction_date": {
                                                     "type": "string",
                                                     "format": "date-time",
-                                                    "example": "2023-10-01T12:00:00Z"
+                                                    "example": "2025-04-11T08:31:54.812490Z"
                                                 },
                                                 "predicted_score": {
                                                     "type": "number",
-                                                    "example": 85
+                                                    "format": "float",
+                                                    "example": 85.58453369140625
                                                 },
                                                 "recommendation": {
                                                     "type": "string",
-                                                    "example": "Perbanyak belajar."
+                                                    "example": "Excellent performance"
                                                 }
                                             },
                                             "type": "object"
@@ -321,14 +447,14 @@
                         }
                     },
                     "422": {
-                        "description": "Kesalahan validasi",
+                        "description": "Validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Kesalahan validasi"
+                                            "example": "Validation error"
                                         },
                                         "errors": {
                                             "properties": {
@@ -336,18 +462,288 @@
                                                     "type": "array",
                                                     "items": {
                                                         "type": "string",
-                                                        "example": "Attendance harus antara 0 dan 100."
+                                                        "example": "Attendance must be between 0 and 100."
                                                     }
                                                 },
                                                 "hours_studied": {
                                                     "type": "array",
                                                     "items": {
                                                         "type": "string",
-                                                        "example": "Hours studied harus berupa angka."
+                                                        "example": "Hours studied must be a number."
                                                     }
                                                 }
                                             },
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/students": {
+            "post": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Tambah student baru",
+                "description": "Menambahkan data student baru ke dalam sistem",
+                "operationId": "20b07e0eabfb966bf0029eef43b01b6e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "age",
+                                    "gender",
+                                    "education"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "age": {
+                                        "type": "integer",
+                                        "example": 20
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "male",
+                                            "female"
+                                        ],
+                                        "example": "male"
+                                    },
+                                    "education": {
+                                        "type": "string",
+                                        "example": "SMA"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Student berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Student added successfully"
+                                        },
+                                        "student": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "age": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "male"
+                                                },
+                                                "education": {
+                                                    "type": "string",
+                                                    "example": "SMA"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The name field is required."
+                                                    }
+                                                },
+                                                "age": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The age must be an integer."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/students/student-detail": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Data detail student yang melakukan prediksi",
+                "description": "Data detail student sesuai dengan pengguna yang membuka website .",
+                "operationId": "e4edea53a3106a1125b64a39373ce7bd",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved student",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully retrieved student"
+                                        },
+                                        "student": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "age": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "male"
+                                                },
+                                                "education": {
+                                                    "type": "string",
+                                                    "example": "SMA"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Gagal mengambil data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Gagal mengambil data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/subjects": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Mata pelajaran",
+                "description": "List dari semua mata pelajaran yang ingin diprediksi .",
+                "operationId": "5b55d0dd2acec6e2f965e18048cf7294",
+                "responses": {
+                    "200": {
+                        "description": "Data mata pelajaran berhasil didapatkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data mata pelajaran berhasil didapatkan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid credentials"
                                         }
                                     },
                                     "type": "object"
@@ -367,6 +763,14 @@
         {
             "name": "Predict",
             "description": "Predict"
+        },
+        {
+            "name": "Students",
+            "description": "Students"
+        },
+        {
+            "name": "Subjects",
+            "description": "Subjects"
         }
     ]
 }

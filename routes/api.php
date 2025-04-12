@@ -9,7 +9,14 @@ Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::prefix('subjects')->group(base_path('routes/api/v1/subjects.php'));
+    Route::prefix('students')->group(base_path('routes/api/v1/students.php'));
     Route::prefix('predict')->group(base_path('routes/api/v1/prediction.php'));
+
+    Route::post('/guest-session', [StudentController::class, 'createGuestSession']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
 });
 
 Route::post('register', [StudentController::class, 'register']);
