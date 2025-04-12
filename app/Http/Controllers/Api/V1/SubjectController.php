@@ -9,7 +9,26 @@ use Illuminate\Http\Request;
 class SubjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/v1/subjects",
+     *      tags={"Subjects"},
+     *      summary="Mata pelajaran",
+     *      description="List dari semua mata pelajaran yang ingin diprediksi .",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Data mata pelajaran berhasil didapatkan",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Data mata pelajaran berhasil didapatkan")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Invalid credentials",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Invalid credentials")
+     *          )
+     *      )
+     * )
      */
     public function index()
     {

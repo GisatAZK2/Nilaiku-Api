@@ -6,11 +6,21 @@ use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StudentRequest;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Services\StudentService;
 
 class StudentController extends Controller
 {
+    protected $studentService;
+
+    public function __construct(StudentService $studentService) {
+        $this->studentService = $studentService;
+    }
+
     /**
      * Atur middleware di Laravel 12
      */
@@ -20,13 +30,13 @@ class StudentController extends Controller
             new Middleware('auth:sanctum', except: ['publicStudents']),
         ];
     }
-    
+
     /**
      * Membuat sesi guest dengan token unik
      */
     public function createGuestSession(Request $request)
     {
-        if (session()->has('guest_session_token')) {
+        if (session()->has('guest_session_id')) {
             $student = Student::where('guest_session_token', session('guest_session_token'))->first();
         } else {
             $guestToken = Str::random(32);
@@ -36,7 +46,7 @@ class StudentController extends Controller
             ]);
             session(['guest_session_token' => $guestToken]);
         }
-
+    
         return response()->json($student, 201);
     }
 
@@ -63,37 +73,107 @@ class StudentController extends Controller
     }
 
     /**
-     * Registrasi user baru
+     * @OA\Post(
+     *      path="/api/v1/students",
+     *      tags={"Students"},
+     *      summary="Tambah student baru",
+     *      description="Menambahkan data student baru ke dalam sistem",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"name", "age", "gender", "education"},
+     *              @OA\Property(property="name", type="string", example="John Doe"),
+     *              @OA\Property(property="age", type="integer", example=20),
+     *              @OA\Property(property="gender", type="string", enum={"male", "female"}, example="male"),
+     *              @OA\Property(property="education", type="string", example="SMA"),
+     *              @OA\Property(property="user_id", type="integer", example=1, nullable=true)
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Student berhasil ditambahkan",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Student added successfully"),
+     *              @OA\Property(property="student", type="object",
+     *                  @OA\Property(property="id", type="integer", example=1),
+     *                  @OA\Property(property="name", type="string", example="John Doe"),
+     *                  @OA\Property(property="age", type="integer", example=20),
+     *                  @OA\Property(property="gender", type="string", example="male"),
+     *                  @OA\Property(property="education", type="string", example="SMA"),
+     *                  @OA\Property(property="user_id", type="integer", example=1, nullable=true),
+     *                  @OA\Property(property="created_at", type="string", format="date-time"),
+     *                  @OA\Property(property="updated_at", type="string", format="date-time")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Validasi gagal",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *              @OA\Property(property="errors", type="object",
+     *                  @OA\Property(property="name", type="array",
+     *                      @OA\Items(type="string", example="The name field is required.")
+     *                  ),
+     *                  @OA\Property(property="age", type="array",
+     *                      @OA\Items(type="string", example="The age must be an integer.")
+     *                  )
+     *              )
+     *          )
+     *      )
+     * )
      */
-    public function register(Request $request)
+    public function store(StudentRequest $request)
     {
-        $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'role'     => 'required|in:siswa,admin',
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role'     => $validated['role'],
-            'is_guest' => $validated['role'] === 'guest',
-        ]);
-
-        if ($validated['role'] === 'siswa') {
-            Student::create([
-                'user_id'       => $user->id,
-                'name'          => $validated['name'],
-                'date_of_birth' => now()->subYears(15),
-                'gender'        => 'Laki-laki',
-            ]);
-        }
+        $student = $this->studentService->createOrUpdateStudent($validated);
 
         return response()->json([
-            'message' => 'User registered successfully',
-            'user'    => $user,
-        ]);
+            'message' => 'Student added successfully',
+            'student'    => $student,
+        ], 201);
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/students/student-detail",
+     *      tags={"Students"},
+     *      summary="Data detail student yang melakukan prediksi",
+     *      description="Data detail student sesuai dengan pengguna yang membuka website .",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully retrieved student",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Successfully retrieved student"),
+     *              @OA\Property(property="student", type="object",
+     *                  @OA\Property(property="id", type="integer", example=1),
+     *                  @OA\Property(property="name", type="string", example="John Doe"),
+     *                  @OA\Property(property="age", type="integer", example=20),
+     *                  @OA\Property(property="gender", type="string", example="male"),
+     *                  @OA\Property(property="education", type="string", example="SMA"),
+     *                  @OA\Property(property="user_id", type="integer", example=1, nullable=true),
+     *                  @OA\Property(property="created_at", type="string", format="date-time"),
+     *                  @OA\Property(property="updated_at", type="string", format="date-time")
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Gagal mengambil data",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="Gagal mengambil data")
+     *          )
+     *      )
+     * )
+     */
+    public function showStudentForGuest()
+    {
+        $student = $this->studentService->getStudentData();
+
+        return response()->json([
+            'message' => 'Successfully retrieved student',
+            'student'    => $student,
+        ], status: 200);
     }
 }

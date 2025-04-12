@@ -35,8 +35,8 @@ return [
         ],
     ],
     'ml_api' => [
-        'url' => env('ML_API_URL'),
-        'key' => env('ML_API_KEY'),
+        'url' => env('ML_API_URL', 'http://127.0.0.1:5000'),
+        'key' => env('ML_API_KEY', 'c43649ac42bc8e0259106ffd7cb9571cda6a03a1010d2c2c6415bab08dbf98e3'),
     ],
 
 
