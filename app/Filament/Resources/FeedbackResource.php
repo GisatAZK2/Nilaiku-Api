@@ -43,12 +43,12 @@ class FeedbackResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->sortable()
-                    ->label('ID')
+                    ->label('ID_User')
                     ->rowindex()
                     ->searchable(),
                     Tables\Columns\TextColumn::make('prediction_id')
                     ->sortable()
-                    ->label('ID')
+                    ->label('ID_Preddiksi')
                     ->rowindex()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
