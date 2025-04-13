@@ -24,6 +24,7 @@ class DataSiswaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Data Siswa';
+    protected static ?string $navigationGroup = 'Siswa';
 
     public static function form(Form $form): Form
     {
@@ -93,7 +94,8 @@ class DataSiswaResource extends Resource
                 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -113,7 +115,7 @@ class DataSiswaResource extends Resource
     {
         return [
             'index' => Pages\ListDataSiswas::route('/'),
-            'edit' => Pages\EditDataSiswa::route('/{record}/edit'),
+            //'edit' => Pages\EditDataSiswa::route('/{record}/edit'),
         ];
     }
 }

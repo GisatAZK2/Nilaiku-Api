@@ -753,6 +753,220 @@
                     }
                 }
             }
+        },
+        "/api/feedbacks": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Submit feedback dari user",
+                "operationId": "d851e5d2f047fb999dd85e467164aa2a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "prediction_id",
+                                    "comment",
+                                    "rating"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "prediction_id": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "iiih takutnee"
+                                    },
+                                    "rating": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 9.99
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Feedback berhasil disimpan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Feedback berhasil disimpan"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "prediction_id": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "comment": {
+                                                    "type": "string",
+                                                    "example": "iiih takutnee"
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "example": 9.99
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-04-13 04:51:28"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validasi gagal"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/report": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Upload a report file",
+                "description": "Endpoint untuk mengunggah Report Bug / Error berupa file.",
+                "operationId": "8db26b93ce99edf4899e468a09b81c19",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "report_type",
+                                    "generate_date",
+                                    "report_file"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "report_type": {
+                                        "type": "string",
+                                        "example": "Monthly Report"
+                                    },
+                                    "generate_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-10"
+                                    },
+                                    "report_file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Report uploaded successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Report uploaded successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "report_type": {
+                                                    "type": "string",
+                                                    "example": "Monthly Report"
+                                                },
+                                                "generate_date": {
+                                                    "type": "string",
+                                                    "example": "2025-04-10"
+                                                },
+                                                "report_file": {
+                                                    "type": "string",
+                                                    "example": "reports/abcd1234.pdf"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -771,6 +985,14 @@
         {
             "name": "Subjects",
             "description": "Subjects"
+        },
+        {
+            "name": "Feedback",
+            "description": "Feedback"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         }
     ]
 }

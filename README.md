@@ -111,6 +111,12 @@ Mulai laravel
   php artisan serve
 ```
 
+Storage Link
+
+```bash
+  php artisan storge:link
+```
+
 Buka http://127.0.0.1:8000
 
 Buka http://127.0.0.1:8000/api/documentation untuk melihat dokumentasi penggunaan api
