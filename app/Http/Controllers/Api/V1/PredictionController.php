@@ -59,6 +59,7 @@ class PredictionController extends Controller
      *          @OA\Property(property="gender", type="string", example="male"),
      *          @OA\Property(property="education", type="string", example="SMA"),
      *          @OA\Property(property="user_id", type="integer", example=null, nullable=true),
+     *          @OA\Property(property="guest_session_token", type="string", example=eb68fc6f-173f-4cbe-a710-780c1cfc21cd, nullable=true),
      *          @OA\Property(property="created_at", type="string", format="date-time"),
      *          @OA\Property(property="updated_at", type="string", format="date-time")
      *      ),

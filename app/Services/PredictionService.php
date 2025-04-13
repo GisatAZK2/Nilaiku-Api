@@ -50,7 +50,8 @@ class PredictionService
     {
         $isGuest = ! is_numeric($userIdOrGuestToken);
 
-        $student = Student::where($isGuest ? 'guest_session_token' : 'user_id', $userIdOrGuestToken)->first();
+        // $student = Student::where($isGuest ? 'guest_session_token' : 'user_id', $userIdOrGuestToken)->first();
+        $student = Student::findorFail($data['student_id']);
 
         $record = AcademicRecord::create([
             'student_id'          => $student->id ?? $data['student_id'],
