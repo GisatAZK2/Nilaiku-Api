@@ -27,6 +27,11 @@ class ReportsResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+       return false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
