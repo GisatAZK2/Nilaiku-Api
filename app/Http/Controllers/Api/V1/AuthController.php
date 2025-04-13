@@ -1,14 +1,12 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use App\Models\Student;
-use Illuminate\Http\Request;
-use App\Models\AcademicRecord;
-use App\Models\PredictionResult;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -48,7 +46,7 @@ class AuthController extends Controller
      *          response=422,
      *          description="Validation error",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Validation error"),
+     *              @OA\Property(property="message", type="string", example="The given data was invalid"),
      *              @OA\Property(property="errors", type="object",
      *                  @OA\Property(property="email", type="array",
      *                      @OA\Items(type="string", example="Email ini sudah terdaftar.")
@@ -93,20 +91,19 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        
         if (session()->has('guest_student_data')) {
             $student = Student::create(attributes: [
-                'user_id' => $user->id,
-                'name' => $user->name,
-                'gender' => null,
+                'user_id'       => $user->id,
+                'name'          => $user->name,
+                'gender'        => null,
                 'date_of_birth' => null,
-                'is_guest' => false,
+                'is_guest'      => false,
             ]);
             // $guest = session('guest_prediction_data');
             // $guestToken = session('guest_prediction_data');
-        
+
             // $student = Student::firstOrCreate(
-            //     ['user_id' => $user->id], 
+            //     ['user_id' => $user->id],
             //     [
             //         'user_id' => $user->id,
             //         'name' => $user->name,
@@ -115,7 +112,7 @@ class AuthController extends Controller
             //         'is_guest' => false,
             //     ]
             // );
-        
+
             // $record = AcademicRecord::firstOrCreate(
             //     ['student_id' => $student->id],
             //     [
@@ -132,23 +129,23 @@ class AuthController extends Controller
             //         'access_to_resources' => $guest['academic_record']['access_to_resources'],
             //     ]
             // );
-        
+
             // PredictionResult::create([
             //     'academic_record_id' => $record->id,
             //     'prediction_date' => now(),
             //     'predicted_score' => $guest['prediction_result']['predicted_score'],
             //     'recommendation' => $guest['prediction_result']['recommendation'],
             // ]);
-        
-            // session()->forget('guest_prediction');
+
+            // session()->forget('guest_prediction_data');
             session()->forget('guest_session_id');
-        }        
+        }
 
         return response()->json([
-            'message' => 'User registered successfully',
-            'user'    => Arr::except($user, ['role']),
+            'message'      => 'User registered successfully',
+            'user'         => Arr::except($user->toArray(), ['role']),
             'access_token' => $token,
-            'token_type' => 'Bearer'
+            'token_type'   => 'Bearer',
         ], 201);
     }
 
@@ -197,9 +194,9 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login success',
+            'message'      => 'Login success',
             'access_token' => $token,
-            'token_type' => 'Bearer'
+            'token_type'   => 'Bearer',
         ], 200);
     }
 
@@ -207,7 +204,7 @@ class AuthController extends Controller
     {
         Auth::user()->tokens()->delete();
         return response()->json([
-            'message' => 'Logout success'
+            'message' => 'Logout success',
         ]);
     }
 }

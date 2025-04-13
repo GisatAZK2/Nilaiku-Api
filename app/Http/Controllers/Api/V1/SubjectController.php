@@ -16,23 +16,34 @@ class SubjectController extends Controller
      *      description="List dari semua mata pelajaran yang ingin diprediksi .",
      *      @OA\Response(
      *          response=200,
-     *          description="Data mata pelajaran berhasil didapatkan",
+     *          description="Successfully retrieved data",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Data mata pelajaran berhasil didapatkan")
+     *              @OA\Property(property="message", type="string", example="Successfully retrieved data")
      *          )
      *      ),
      *      @OA\Response(
-     *          response=401,
-     *          description="Invalid credentials",
+     *          response=404,
+     *          description="Data not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="error", type="string", example="Invalid credentials")
+     *              @OA\Property(property="error", type="string", example="Data not found")
      *          )
      *      )
      * )
      */
     public function index()
     {
-        return response()->json(Subject::all());
+        $subjects = Subject::all();
+
+        if ($subjects->isEmpty()) {
+            return response()->json([
+                'error' => 'Data not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Successfully retrieved data',
+            'subjects' => $subjects
+        ], 200);
     }
 
     /**

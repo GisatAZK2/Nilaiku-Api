@@ -20,7 +20,7 @@ class GuestSessionService
             'is_guest'            => true,
             'guest_session_token' => $sessionId,
         ];
-        
+
         Session::put(self::STUDENT_KEY, $studentData);
     }
 
@@ -34,6 +34,7 @@ class GuestSessionService
         $newPrediction = [
             'session_id'        => $sessionId,
             'academic_record'   => [
+                'student_id'          => $data['student_id'],
                 'subject_id'          => $data['subject_id'],
                 'input_date'          => now(),
                 'attendance'          => $data['attendance'],

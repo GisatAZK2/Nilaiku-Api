@@ -107,7 +107,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation error"
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -222,10 +222,6 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "age",
-                                    "gender",
-                                    "education",
                                     "attendance",
                                     "hours_studied",
                                     "previous_scores",
@@ -237,22 +233,6 @@
                                     "access_to_resources"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "text",
-                                        "example": "John Doe"
-                                    },
-                                    "age": {
-                                        "type": "number",
-                                        "example": 15
-                                    },
-                                    "gender": {
-                                        "type": "text",
-                                        "example": "male"
-                                    },
-                                    "education": {
-                                        "type": "text",
-                                        "example": "SMK"
-                                    },
                                     "subject_id": {
                                         "type": "number",
                                         "example": 1
@@ -454,7 +434,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation error"
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -537,7 +517,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Student berhasil ditambahkan",
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -591,14 +571,14 @@
                         }
                     },
                     "422": {
-                        "description": "Validasi gagal",
+                        "description": "Validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "The given data was invalid."
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -638,14 +618,14 @@
                 "operationId": "e4edea53a3106a1125b64a39373ce7bd",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved student",
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Successfully retrieved student"
+                                            "example": "Successfully retrieved data"
                                         },
                                         "student": {
                                             "properties": {
@@ -691,15 +671,15 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Gagal mengambil data",
+                    "404": {
+                        "description": "Data not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Gagal mengambil data"
+                                            "example": "Data not found"
                                         }
                                     },
                                     "type": "object"
@@ -720,14 +700,14 @@
                 "operationId": "5b55d0dd2acec6e2f965e18048cf7294",
                 "responses": {
                     "200": {
-                        "description": "Data mata pelajaran berhasil didapatkan",
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Data mata pelajaran berhasil didapatkan"
+                                            "example": "Successfully retrieved data"
                                         }
                                     },
                                     "type": "object"
@@ -735,15 +715,15 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Invalid credentials",
+                    "404": {
+                        "description": "Data not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid credentials"
+                                            "example": "Data not found"
                                         }
                                     },
                                     "type": "object"

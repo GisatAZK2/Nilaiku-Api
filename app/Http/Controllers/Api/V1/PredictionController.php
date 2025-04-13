@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Helpers\PredictionHelper;
-use App\Services\PredictionService;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Services\GuestSessionService;
-use Illuminate\Support\Facades\Session;
 use App\Http\Requests\PredictionRequest;
+use App\Models\User;
+use App\Services\GuestSessionService;
+use App\Services\PredictionService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PredictionController extends Controller
 {
@@ -20,10 +20,9 @@ class PredictionController extends Controller
         PredictionService $predictionService,
         GuestSessionService $guestSessionService
     ) {
-        $this->predictionService = $predictionService;
+        $this->predictionService   = $predictionService;
         $this->guestSessionService = $guestSessionService;
     }
-
 
     /**
      * @OA\Post(
@@ -34,11 +33,8 @@ class PredictionController extends Controller
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(
-     *              required={"name", "age", "gender", "education", "attendance", "hours_studied", "previous_scores", "sleep_hours", "tutoring_sessions", "peer_influence", "motivation_level", "teacher_quality", "access_to_resources"},
-     *              @OA\Property(property="name", type="text", example="John Doe"),
-     *              @OA\Property(property="age", type="number", example=15),
-     *              @OA\Property(property="gender", type="text", example="male"),
-     *              @OA\Property(property="education", type="text", example="SMK"),
+     *              required={"subject_id", "attendance", "hours_studied", "previous_scores", "sleep_hours", "tutoring_sessions", "peer_influence", "motivation_level", "teacher_quality", "access_to_resources"},
+     *              @OA\Property(property="student_id", type="number", example=1),
      *              @OA\Property(property="subject_id", type="number", example=1),
      *              @OA\Property(property="attendance", type="number", example=90),
      *              @OA\Property(property="hours_studied", type="number", example=5),
@@ -90,7 +86,7 @@ class PredictionController extends Controller
      *          response=422,
      *          description="Validation error",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Validation error"),
+     *              @OA\Property(property="message", type="string", example="The given data was invalid"),
      *              @OA\Property(property="errors", type="object",
      *                  @OA\Property(property="attendance", type="array",
      *                      @OA\Items(type="string", example="Attendance must be between 0 and 100.")
@@ -105,7 +101,7 @@ class PredictionController extends Controller
      */
     public function predict(PredictionRequest $request)
     {
-        $validatedData = $request->validated();
+        $validatedData  = $request->validated();
         $dataPrediction = PredictionHelper::convertToModelFormat($validatedData);
 
         //Post to Model Flask API
@@ -128,15 +124,15 @@ class PredictionController extends Controller
         $userIdOrGuestToken = Auth::check() ? Auth::id() : Session::get('guest_session_id');
 
         if (! Auth::check()) {
-            $response = $this->guestSessionService->storeGuestPrediction($validatedData, $predictionResult);
+            $responseGuest = $this->guestSessionService->storeGuestPrediction($validatedData, $predictionResult);
         }
         $response = $this->predictionService->storePrediction($validatedData, $predictionResult, $userIdOrGuestToken);
 
         return response()->json([
-            'message' => 'Predicted successfully',
-            'student' => $response['student'] ?? null,
-            'record' => $response['record'],
-            'prediction_result' => $response['prediction_result']
+            'message'           => 'Predicted successfully',
+            'student'           => $response['student'] ?? null,
+            'record'            => $response['record'],
+            'prediction_result' => $response['prediction_result'],
         ], 201);
     }
 
