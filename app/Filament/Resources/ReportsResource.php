@@ -27,6 +27,12 @@ class ReportsResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+       return false;
+    }
+   
+
     public static function table(Table $table): Table
     {
         return $table
@@ -60,7 +66,8 @@ class ReportsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
