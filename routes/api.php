@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\StudentController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ReportController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -20,7 +22,10 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::post('register', [StudentController::class, 'register']);
+Route::post('/feedbacks', [FeedbackController::class, 'store']);
+Route::post('/report', [ReportController::class, 'store']);
 Route::get('/students', [StudentController::class, 'publicStudents']); // Bisa diakses tanpa login
 Route::middleware('auth:sanctum')->get('/students/private', [StudentController::class, 'index']);
+
 
 
