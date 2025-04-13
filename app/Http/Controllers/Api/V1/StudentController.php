@@ -129,6 +129,12 @@ class StudentController extends Controller
 
         $student = $this->studentService->createOrUpdateStudent($validated);
 
+        if (! $student) {
+            return response()->json([
+                'message' => 'Error'
+            ], 401);
+        }
+
         return response()->json([
             'message' => 'Student added successfully',
             'student'    => $student,
