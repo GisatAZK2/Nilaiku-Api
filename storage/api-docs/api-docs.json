@@ -864,6 +864,109 @@
                     }
                 }
             }
+        },
+        "/api/report": {
+            "post": {
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Upload a report file",
+                "description": "Endpoint untuk mengunggah Report Bug / Error berupa file.",
+                "operationId": "8db26b93ce99edf4899e468a09b81c19",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "report_type",
+                                    "generate_date",
+                                    "report_file"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "report_type": {
+                                        "type": "string",
+                                        "example": "Monthly Report"
+                                    },
+                                    "generate_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-10"
+                                    },
+                                    "report_file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Report uploaded successfully!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Report uploaded successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "report_type": {
+                                                    "type": "string",
+                                                    "example": "Monthly Report"
+                                                },
+                                                "generate_date": {
+                                                    "type": "string",
+                                                    "example": "2025-04-10"
+                                                },
+                                                "report_file": {
+                                                    "type": "string",
+                                                    "example": "reports/abcd1234.pdf"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -886,6 +989,10 @@
         {
             "name": "Feedback",
             "description": "Feedback"
+        },
+        {
+            "name": "Reports",
+            "description": "Reports"
         }
     ]
 }
