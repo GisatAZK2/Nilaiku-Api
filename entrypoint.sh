@@ -8,7 +8,7 @@ php artisan config:clear
 php artisan config:cache
 php artisan migrate --force
 php artisan db:seed --class=DatabaseSeeder --force
-php artisan filament:optimize
+php artisan filament:optimize --force
 
 # Publish Filament and Swagger assets
 php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force
