@@ -1,10 +1,29 @@
 {
     "version": 2,
-    "framework": null,
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.7.3" }
     },
     "routes": [
+        {
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
+        },
+        {
+            "src": "/css/(.*)",
+            "dest": "/public/css/$1"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/public/js/$1"
+        },
+        {
+            "src": "/images/(.*)",
+            "dest": "/public/images/$1"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "/public/favicon.ico"
+        },
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
@@ -14,7 +33,6 @@
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://api-nilaiku.vercel.app",
-        "APP_KEY": "base64:Ov3DkrmgB9H4aoE8knmYm9PIuAHKTsLqjsiBVklIt+A=",
 
         "DB_CONNECTION":"mysql",
         "DB_HOST":"tpco3.h.filess.io",
@@ -33,5 +51,9 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    }
+    },
+    "build": {
+        "command": "composer install && php artisan config:clear && php artisan config:cache && php artisan db:seed --class=DatabaseSeeder --force && php artisan vendor:publish --all --force && php artisan storage:link && php artisan l5-swagger:generate"
+    },
+    "outputDirectory": "public"
 }
