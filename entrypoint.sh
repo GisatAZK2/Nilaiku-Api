@@ -1,15 +1,9 @@
 #!/bin/bash
 set -e
 
-# Railway injects PORT only if EXPOSE ≠ 80
-PORT=${PORT:-8000}
-
 echo "🚀 Starting Laravel container..."
-echo "🌐 Apache listening on PORT=$PORT"
 
-# Ganti Apache agar pakai port yang benar
-sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g" /etc/apache2/sites-available/000-default.conf
+echo "🌐 Using PORT=${PORT:-8080}"
 
 # Laravel setup commands
 php artisan config:clear
