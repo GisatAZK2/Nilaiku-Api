@@ -23,6 +23,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install PHP dependencies
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
+
+RUN npm install
 RUN npm run build
 
 # Set Laravel public folder as Apache root
