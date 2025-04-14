@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -16,9 +15,10 @@ class CorsMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
-        $response->headers->set('Access-Control-Allow-Origin', ['http://localhost:3000', 'http://127.0.0.1:3000','http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8000', 'http://127.0.0.1:8000', 'https://nilaiku.vercel.app',]);
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+        $response->headers->set('Access-Control-Allow-Origin', config('cors.allowed_origins'));
+        $response->headers->set('Access-Control-Allow-Methods', implode(', ', config('cors.allowed_methods')));
+        $response->headers->set('Access-Control-Allow-Headers', implode(', ', config('cors.allowed_headers')));
+        \Log::info($response->headers->all());
         return $response;
     }
 }
