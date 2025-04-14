@@ -3,11 +3,12 @@ set -e
 
 echo "🚀 Starting Laravel container..."
 
+echo "🌐 Using PORT=${PORT:-8080}"
+
 # Laravel setup commands
 php artisan config:clear
 php artisan config:cache
 php artisan migrate --force
-php artisan db:seed --class=DatabaseSeeder --force
 php artisan filament:optimize --force
 
 # Publish Filament and Swagger assets
