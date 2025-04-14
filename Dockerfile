@@ -32,16 +32,12 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-avail
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Set Apache to listen on Railway-provided PORT
-ENV PORT=8000
-RUN sed -i "s/80/\${PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
-
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Expose the correct port
+# Expose Apache default port
 EXPOSE ${PORT}
 
-# Run the entrypoint script
+# Run entrypoint script
 CMD ["/entrypoint.sh"]

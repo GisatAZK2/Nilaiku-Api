@@ -9,7 +9,7 @@ echo "🌐 Using PORT=${PORT:-8080}"
 php artisan config:clear
 php artisan config:cache
 php artisan migrate --force
-php artisan filament:optimize --force
+php artisan filament:optimize
 
 # Publish Filament and Swagger assets
 php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force
