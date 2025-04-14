@@ -4,7 +4,7 @@ FROM php:8.3-apache
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
     libicu-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
-    nodejs npm \
+    # nodejs npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo pdo_mysql zip intl \
@@ -24,8 +24,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 # Install PHP dependencies
 RUN composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
 
-RUN npm install
-RUN npm run build
+# RUN npm install
+# RUN npm run build
 
 # Set Laravel public folder as Apache root
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
