@@ -222,6 +222,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
+                                    "subject_id",
                                     "attendance",
                                     "hours_studied",
                                     "previous_scores",
@@ -233,6 +234,10 @@
                                     "access_to_resources"
                                 ],
                                 "properties": {
+                                    "student_id": {
+                                        "type": "number",
+                                        "example": 1
+                                    },
                                     "subject_id": {
                                         "type": "number",
                                         "example": 1
@@ -335,6 +340,11 @@
                                                 "user_id": {
                                                     "type": "integer",
                                                     "example": null,
+                                                    "nullable": true
+                                                },
+                                                "guest_session_token": {
+                                                    "type": "string",
+                                                    "example": "eb68fc6f-173f-4cbe-a710-780c1cfc21cd",
                                                     "nullable": true
                                                 },
                                                 "created_at": {
@@ -608,14 +618,14 @@
                 }
             }
         },
-        "/api/v1/students/student-detail": {
+        "/api/v1/students/student-detail/{guest_session_token}": {
             "get": {
                 "tags": [
                     "Students"
                 ],
                 "summary": "Data detail student yang melakukan prediksi",
                 "description": "Data detail student sesuai dengan pengguna yang membuka website .",
-                "operationId": "e4edea53a3106a1125b64a39373ce7bd",
+                "operationId": "e25d4554585fcde5f38e80d474140966",
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved data",
@@ -652,6 +662,11 @@
                                                 "user_id": {
                                                     "type": "integer",
                                                     "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "guest_session_token": {
+                                                    "type": "string",
+                                                    "example": "eb68fc6f-173f-4cbe-a710-780c1cfc21cd",
                                                     "nullable": true
                                                 },
                                                 "created_at": {

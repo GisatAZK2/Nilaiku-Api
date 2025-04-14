@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 
-class Systeminformation
+class SystemInformation
 {
     public function getTotalRamInGb(): ?string
     {
@@ -39,7 +38,7 @@ class Systeminformation
     private function getWindowsRam(): ?string
     {
         try {
-            $cmd = 'powershell -Command "Get-WmiObject Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum | ForEach-Object { [Math]::Round($_.Sum / 1GB, 2) }"';
+            $cmd    = 'powershell -Command "Get-WmiObject Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum | ForEach-Object { [Math]::Round($_.Sum / 1GB, 2) }"';
             $output = shell_exec($cmd);
 
             if ($output !== null) {
