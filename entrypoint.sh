@@ -19,7 +19,6 @@ php artisan config:cache
 php artisan filament:optimize
 
 # Publish Filament and Swagger assets
-php artisan vendor:publish --provider="L5Swagger\\L5SwaggerServiceProvider" --force
 php artisan vendor:publish --tag=filament-assets --force
 php artisan vendor:publish --tag=filament-config --force
 
