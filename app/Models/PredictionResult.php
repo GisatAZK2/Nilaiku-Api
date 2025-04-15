@@ -13,10 +13,6 @@ class PredictionResult extends Model
         'recommendation'
     ];
 
-    protected $cast = [
-        'prediction_date' => 'datetime',
-    ];
-
     public function academicRecord()
     {
         return $this->belongsTo(AcademicRecord::class, 'record_id');
