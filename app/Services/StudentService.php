@@ -89,4 +89,26 @@ class StudentService
 
         return $student;
     }
+
+    public function updateStudentData(array $data){
+        if (Auth::check()) {
+            $student = Student::where('user_id', Auth::id())->first();
+        } else {
+            $sessionId = Session::get('guest_session_id');
+            $student = Student::where('guest_session_token', $sessionId)->first();
+        }
+
+        if (!$student) {
+            return null;
+        }
+
+        $student->update($data);
+
+        // Simpan kembali data di session jika guest
+        if (!Auth::check()) {
+            $this->storeGuestStudentData($data);
+        }
+
+        return $student;
+    }
 }

@@ -618,6 +618,67 @@
                 }
             }
         },
+        "/api/v1/students/student-update/{id}": {
+            "put": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Update data student (guest atau user)",
+                "description": "Mengubah data student berdasarkan guest session atau user yang login.",
+                "operationId": "7caab15dc77cff98af144fbb3794d18f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dari student yang ingin diupdate",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "age",
+                                    "gender",
+                                    "education"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Doe"
+                                    },
+                                    "age": {
+                                        "type": "integer",
+                                        "example": 21
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "male",
+                                            "female"
+                                        ],
+                                        "example": "female"
+                                    },
+                                    "education": {
+                                        "type": "string",
+                                        "example": "SMK Cibitung 1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Student updated successfully",
+
         "/api/v1/students/student-detail/{guest_session_token}": {
             "get": {
                 "tags": [
@@ -635,6 +696,10 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
+                                            "example": "Student updated successfully"
+                                        },
+                                        "student": {
+
                                             "example": "Successfully retrieved data"
                                         },
                                         "student": {
@@ -678,6 +743,7 @@
                                                     "format": "date-time"
                                                 }
                                             },
+
                                             "type": "object"
                                         }
                                     },
@@ -687,14 +753,21 @@
                         }
                     },
                     "404": {
+
+                        "description": "Student not found",
+
                         "description": "Data not found",
+
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "Data not found"
+
+                                            "example": "Student not found"
+
+                                         "example": "Data not found"
                                         }
                                     },
                                     "type": "object"
