@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -52,13 +54,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOne(Student::class, 'user_id', 'id');
     }
 
-    public function canAccessPanel(\Filament\Panel $panel): bool
+    /**
+     * Menentukan apakah user dapat mengakses panel Filament.
+     */
+    public function canAccessPanel(Panel $panel): bool
     {
-        if ($this->role !== 'admin') {
-            session()->flash('authError', 'Akun Anda tidak memiliki akses ke panel admin.');
-            return false;
-        }
-    
-        return true;
+        return $this->role === 'admin';
     }
 }
