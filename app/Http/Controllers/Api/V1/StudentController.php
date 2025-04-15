@@ -1,23 +1,22 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use App\Models\Student;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StudentRequest;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Routing\Controllers\Middleware;
+use App\Models\Student;
+use App\Models\User;
 use App\Services\StudentService;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
     protected $studentService;
 
-    public function __construct(StudentService $studentService) {
+    public function __construct(StudentService $studentService)
+    {
         $this->studentService = $studentService;
     }
 
@@ -40,9 +39,9 @@ class StudentController extends Controller
             $student = Student::where('guest_session_token', session('guest_session_token'))->first();
         } else {
             $guestToken = Str::random(32);
-            $student = Student::create([
+            $student    = Student::create([
                 'guest_session_token' => $guestToken,
-                'is_guest' => true
+                'is_guest'            => true,
             ]);
             session(['guest_session_token' => $guestToken]);
         }
@@ -131,13 +130,13 @@ class StudentController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Error'
+                'message' => 'Error',
             ], 401);
         }
 
         return response()->json([
             'message' => 'Student added successfully',
-            'student'    => $student,
+            'student' => $student,
         ], 201);
     }
 
@@ -191,13 +190,76 @@ class StudentController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Data not found'
+                'message' => 'Data not found',
             ], status: 404);
         }
 
         return response()->json([
             'message' => 'Successfully retrieved student',
-            'student'    => $student,
+            'student' => $student,
         ], status: 200);
+    }
+
+    /**
+      * @OA\Put(
+      *     path="/api/v1/students/{id}",
+      *     tags={"Students"},
+      *     summary="Update data student (guest atau user)",
+      *     description="Mengubah data student berdasarkan guest session atau user yang login.",
+      *     @OA\Parameter(
+      *         name="id",
+      *         in="path",
+      *         required=true,
+      *         description="ID dari student yang ingin diupdate",
+      *         @OA\Schema(type="integer")
+      *     ),
+      *     @OA\RequestBody(
+      *         required=true,
+      *         @OA\JsonContent(
+      *             required={"name", "age", "gender", "education"},
+      *             @OA\Property(property="name", type="string", example="Jane Doe"),
+      *             @OA\Property(property="age", type="integer", example=21),
+      *             @OA\Property(property="gender", type="string", enum={"male", "female"}, example="female"),
+      *             @OA\Property(property="education", type="string", example="SMK Cibitung 1")
+      *         )
+      *     ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="Student updated successfully",
+      *         @OA\JsonContent(
+      *             @OA\Property(property="message", type="string", example="Student updated successfully"),
+      *             @OA\Property(property="student", type="object")
+      *         )
+      *     ),
+      *     @OA\Response(
+      *         response=404,
+      *         description="Student not found",
+      *         @OA\JsonContent(
+      *             @OA\Property(property="message", type="string", example="Student not found")
+      *         )
+      *     )
+      * )
+     */
+    public function updateStudent(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name'      => 'required|string|max:255',
+            'age'       => 'required|integer',
+            'gender'    => 'required|in:male,female',
+            'education' => 'required|string|max:255',
+        ]);
+
+        $student = Student::find($id);
+
+        if (! $student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $student->update($validated);
+
+        return response()->json([
+            'message' => 'Student updated successfully',
+            'student' => $student,
+        ], 200);
     }
 }
