@@ -201,7 +201,6 @@ class StudentController extends Controller
             'student'    => $student,
         ], status: 200);
     }
-<<<<<<< HEAD
 
     /**
       * @OA\Put(
@@ -242,7 +241,7 @@ class StudentController extends Controller
       *         )
       *     )
       * )
-     */
+    */
     public function updateStudent(Request $request, $id)
     {
         $validated = $request->validate([
@@ -265,6 +264,4 @@ class StudentController extends Controller
             'student' => $student,
         ], 200);
     }
-=======
->>>>>>> parent of f1798b2 (Merge branch 'main' of https://github.com/RidyCh/api.nilaiku)
 }

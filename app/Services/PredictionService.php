@@ -1,10 +1,12 @@
 <?php
 namespace App\Services;
 
+use GuzzleHttp\Client;
+use App\Models\Student;
 use App\Models\AcademicRecord;
 use App\Models\PredictionResult;
-use App\Models\Student;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PredictionService
 {
@@ -80,5 +82,20 @@ class PredictionService
             'record'            => $record,
             'prediction_result' => $predictionResult,
         ];
+    }
+
+    public function getAcademicRecordData($studentId)
+    {
+        if (Auth::check()) {
+            return AcademicRecord::with('student')
+                ->whereHas('student', function($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->latest()
+                ->first();
+        }
+
+        $sessionId = Session::get('guest_session_id');
+        return AcademicRecord::where('student_id', $studentId)->latest()->first();
     }
 }

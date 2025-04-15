@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PredictionRequest extends FormRequest
 {
@@ -47,8 +49,7 @@ class PredictionRequest extends FormRequest
             'tutoring_sessions' => $this->tutoring_sessions ?? 0,
         ]);
     }
-<<<<<<< HEAD
-
+    
     protected function failedValidation(Validator $validator){
         throw new HttpResponseException(response()->json([
             'success' => false,
@@ -56,6 +57,4 @@ class PredictionRequest extends FormRequest
             'errors' => $validator->errors(),
         ], 422));
     }
-=======
->>>>>>> parent of f1798b2 (Merge branch 'main' of https://github.com/RidyCh/api.nilaiku)
 }
