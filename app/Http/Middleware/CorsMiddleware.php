@@ -40,7 +40,7 @@ class CorsMiddleware
         }
 
         if ($request->getMethod() === "OPTIONS") {
-            return response()->json('CORS Preflight OK', 200, $headers);
+            return response()->json('', 200, $headers);
         }
 
         $response = $next($request);
