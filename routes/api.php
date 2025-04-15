@@ -9,9 +9,18 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::prefix('subjects')->group(base_path('routes/api/v1/subjects.php'));
-    Route::prefix('students')->group(base_path('routes/api/v1/students.php'));
-    Route::prefix('predict')->group(base_path('routes/api/v1/prediction.php'));
+
+    Route::prefix('subjects')->group(function () {
+        require base_path('routes/api/v1/subjects.php');
+    });
+
+    Route::prefix('students')->group(function () {
+        require base_path('routes/api/v1/students.php');
+    });
+
+    Route::prefix('predict')->group(function () {
+        require base_path('routes/api/v1/prediction.php');
+    });
 
     Route::post('/guest-session', [StudentController::class, 'createGuestSession']);
 
@@ -22,11 +31,10 @@ Route::prefix('v1')->group(function () {
 
 Route::post('/feedbacks', [FeedbackController::class, 'store']);
 Route::post('/report', [ReportController::class, 'store']);
+
 Route::middleware('auth:sanctum')->get('/students/private', [StudentController::class, 'index']);
 
+// Tangani preflight request untuk semua route
 Route::options('/{any}', function () {
-    return response()->json(['message' => 'OK'])
-        ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+    return response()->json(['message' => 'OK']);
 })->where('any', '.*');

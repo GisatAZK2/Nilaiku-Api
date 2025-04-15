@@ -15,11 +15,22 @@ return [
     |
     */
 
-    'paths' => ['api/*','sanctum/csrf-cookie'],
+    'paths' => ['api/*','sanctum/csrf-cookie', '*'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    
+    'allowed_origins' => [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5174',       // ✅ Tambahkan ini
+  'http://127.0.0.1:5174',       // ✅ Tambahkan juga ini
+  'http://localhost:8000',
+  'http://127.0.0.1:8000',
+  'https://nilaiku.vercel.app',
+],
 
-    'allowed_origins' => ['http://localhost:3000', 'http://127.0.0.1:3000','http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8000', 'http://127.0.0.1:8000', 'https://nilaiku.vercel.app'],
 
     'allowed_origins_patterns' => [],
 

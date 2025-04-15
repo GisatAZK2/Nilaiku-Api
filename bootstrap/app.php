@@ -1,4 +1,7 @@
-<?php
+Zxwaszedfgvhbnm,.//.kjhgrewq    qwsdfghjkl;'
+    qwertyuiop['
+    ewqq    qwertyuiop[]\ASDFGHJKL;'
+    <?php
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
