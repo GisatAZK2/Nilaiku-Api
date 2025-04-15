@@ -11,7 +11,7 @@ class Subject extends Model
 
     protected $fillable = ['name'];
 
-    public function academicRecords(): hasMany
+    public function academicRecords()
     {
         return $this->hasMany(AcademicRecord::class);
     }

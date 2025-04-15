@@ -618,14 +618,27 @@
                 }
             }
         },
-        "/api/v1/students/student-detail/{guest_session_token}": {
+        "/api/v1/students/{id}": {
             "get": {
                 "tags": [
                     "Students"
                 ],
                 "summary": "Data detail student yang melakukan prediksi",
                 "description": "Data detail student sesuai dengan pengguna yang membuka website .",
-                "operationId": "e25d4554585fcde5f38e80d474140966",
+                "operationId": "f5bac9c80188f4a087733eff3a04b33c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID student",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved data",

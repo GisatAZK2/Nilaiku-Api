@@ -143,10 +143,21 @@ class StudentController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/api/v1/students/student-detail/{guest_session_token}",
+     *      path="/api/v1/students/{id}",
      *      tags={"Students"},
      *      summary="Data detail student yang melakukan prediksi",
      *      description="Data detail student sesuai dengan pengguna yang membuka website .",
+     *      @OA\Parameter(
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          description="ID student",
+     *          @OA\Schema(
+     *              type="integer",
+     *              format="int64",
+     *              example=1
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successfully retrieved data",
@@ -174,9 +185,9 @@ class StudentController extends Controller
      *      )
      * )
      */
-    public function showStudentForGuest()
+    public function showStudentForGuest($id)
     {
-        $student = $this->studentService->getStudentData();
+        $student = $this->studentService->getStudentData($id);
 
         if (! $student) {
             return response()->json([

@@ -22,7 +22,7 @@ class StudentService
             'is_guest'            => true,
             'guest_session_token' => $sessionId,
         ];
-        
+
         Session::put(self::STUDENT_KEY, $studentData);
     }
 
@@ -64,14 +64,14 @@ class StudentService
         : Session::get('guest_student_id');
     }
 
-    public function getStudentData()
+    public function getStudentData($id)
     {
         if (Auth::check()) {
             return Student::where('user_id', Auth::id())->first();
         }
-        
+
         $sessionId = Session::get('guest_session_id');
-        return Student::where('guest_session_token', $sessionId)->first();
+        return Student::where('id', $id)->first();
     }
 
     public function assignStudentToUserAfterRegister($userId)
