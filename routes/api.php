@@ -24,6 +24,9 @@ Route::post('/feedbacks', [FeedbackController::class, 'store']);
 Route::post('/report', [ReportController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/students/private', [StudentController::class, 'index']);
 
-Route::options('/{any}', function () {
-    return response()->json(['message' => 'OK']);
-})->where('any', '.*');
+// Route::options('/{any}', function () {
+//     return response()->json(['message' => 'OK'])
+//         ->header('Access-Control-Allow-Origin', ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8000', 'http://127.0.0.1:8000', 'https://nilaiku.vercel.app', 'https://nilaiku-api.up.railway.app'])
+//         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+//         ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
+// })->where('any', '.*');
