@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -16,10 +15,10 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Admin NilaiKu',
-            'email' => 'NilaiKuTeam@gmail.com',
+            'name'     => 'Admin NilaiKu',
+            'email'    => 'NilaiKuTeam@gmail.com',
             'password' => bcrypt('NilaiKuTeam@69'),
-            'role' => 'admin'
+            'role'     => 'admin',
         ]);
     }
 }

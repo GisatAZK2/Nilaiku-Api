@@ -107,7 +107,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation error"
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -222,10 +222,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "age",
-                                    "gender",
-                                    "education",
+                                    "subject_id",
                                     "attendance",
                                     "hours_studied",
                                     "previous_scores",
@@ -237,21 +234,9 @@
                                     "access_to_resources"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "text",
-                                        "example": "John Doe"
-                                    },
-                                    "age": {
+                                    "student_id": {
                                         "type": "number",
-                                        "example": 15
-                                    },
-                                    "gender": {
-                                        "type": "text",
-                                        "example": "male"
-                                    },
-                                    "education": {
-                                        "type": "text",
-                                        "example": "SMK"
+                                        "example": 1
                                     },
                                     "subject_id": {
                                         "type": "number",
@@ -357,6 +342,11 @@
                                                     "example": null,
                                                     "nullable": true
                                                 },
+                                                "guest_session_token": {
+                                                    "type": "string",
+                                                    "example": "eb68fc6f-173f-4cbe-a710-780c1cfc21cd",
+                                                    "nullable": true
+                                                },
                                                 "created_at": {
                                                     "type": "string",
                                                     "format": "date-time"
@@ -454,7 +444,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation error"
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -537,7 +527,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Student berhasil ditambahkan",
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -591,14 +581,14 @@
                         }
                     },
                     "422": {
-                        "description": "Validasi gagal",
+                        "description": "Validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "The given data was invalid."
+                                            "example": "The given data was invalid"
                                         },
                                         "errors": {
                                             "properties": {
@@ -688,6 +678,18 @@
                 "responses": {
                     "200": {
                         "description": "Student updated successfully",
+
+        "/api/v1/students/student-detail/{guest_session_token}": {
+            "get": {
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Data detail student yang melakukan prediksi",
+                "description": "Data detail student sesuai dengan pengguna yang membuka website .",
+                "operationId": "e25d4554585fcde5f38e80d474140966",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -697,6 +699,51 @@
                                             "example": "Student updated successfully"
                                         },
                                         "student": {
+
+                                            "example": "Successfully retrieved data"
+                                        },
+                                        "student": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "age": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "gender": {
+                                                    "type": "string",
+                                                    "example": "male"
+                                                },
+                                                "education": {
+                                                    "type": "string",
+                                                    "example": "SMA"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "guest_session_token": {
+                                                    "type": "string",
+                                                    "example": "eb68fc6f-173f-4cbe-a710-780c1cfc21cd",
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+
                                             "type": "object"
                                         }
                                     },
@@ -706,14 +753,21 @@
                         }
                     },
                     "404": {
+
                         "description": "Student not found",
+
+                        "description": "Data not found",
+
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
+
                                             "example": "Student not found"
+
+                                         "example": "Data not found"
                                         }
                                     },
                                     "type": "object"
@@ -734,14 +788,14 @@
                 "operationId": "5b55d0dd2acec6e2f965e18048cf7294",
                 "responses": {
                     "200": {
-                        "description": "Data mata pelajaran berhasil didapatkan",
+                        "description": "Successfully retrieved data",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Data mata pelajaran berhasil didapatkan"
+                                            "example": "Successfully retrieved data"
                                         }
                                     },
                                     "type": "object"
@@ -749,15 +803,15 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Invalid credentials",
+                    "404": {
+                        "description": "Data not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid credentials"
+                                            "example": "Data not found"
                                         }
                                     },
                                     "type": "object"

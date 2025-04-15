@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->enum('gender', ['male', 'female']);
             $table->string('education');
             $table->boolean('is_guest')->default(false);
-            $table->string('guest_session_token')->nullable();
+            $table->string('guest_session_token')->unique()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

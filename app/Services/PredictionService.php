@@ -4,7 +4,6 @@ namespace App\Services;
 use App\Models\AcademicRecord;
 use App\Models\PredictionResult;
 use App\Models\Student;
-use App\Models\User;
 use GuzzleHttp\Client;
 
 class PredictionService
@@ -49,12 +48,13 @@ class PredictionService
 
     public function storePrediction(array $data, array $result, $userIdOrGuestToken): array
     {
-        $isGuest = !is_numeric($userIdOrGuestToken);
+        $isGuest = ! is_numeric($userIdOrGuestToken);
 
-        $student = Student::where($isGuest ? 'guest_session_token' : 'user_id', $userIdOrGuestToken)->first();
+        // $student = Student::where($isGuest ? 'guest_session_token' : 'user_id', $userIdOrGuestToken)->first();
+        $student = Student::findorFail($data['student_id']);
 
         $record = AcademicRecord::create([
-            'student_id'          => $student->id ?? null,
+            'student_id'          => $student->id ?? $data['student_id'],
             'subject_id'          => $data['subject_id'],
             'input_date'          => now(),
             'attendance'          => $data['attendance'],
@@ -76,9 +76,9 @@ class PredictionService
         ]);
 
         return [
-            'student' => $student,
-            'record' => $record,
-            'prediction_result' => $predictionResult
+            'student'           => $student,
+            'record'            => $record,
+            'prediction_result' => $predictionResult,
         ];
     }
 }

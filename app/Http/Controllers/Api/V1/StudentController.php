@@ -46,7 +46,7 @@ class StudentController extends Controller
             ]);
             session(['guest_session_token' => $guestToken]);
         }
-    
+
         return response()->json($student, 201);
     }
 
@@ -91,7 +91,7 @@ class StudentController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="Student berhasil ditambahkan",
+     *          description="Successfully retrieved data",
      *          @OA\JsonContent(
      *              @OA\Property(property="message", type="string", example="Student added successfully"),
      *              @OA\Property(property="student", type="object",
@@ -108,9 +108,9 @@ class StudentController extends Controller
      *      ),
      *      @OA\Response(
      *          response=422,
-     *          description="Validasi gagal",
+     *          description="Validation error",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *              @OA\Property(property="message", type="string", example="The given data was invalid"),
      *              @OA\Property(property="errors", type="object",
      *                  @OA\Property(property="name", type="array",
      *                      @OA\Items(type="string", example="The name field is required.")
@@ -129,6 +129,12 @@ class StudentController extends Controller
 
         $student = $this->studentService->createOrUpdateStudent($validated);
 
+        if (! $student) {
+            return response()->json([
+                'message' => 'Error'
+            ], 401);
+        }
+
         return response()->json([
             'message' => 'Student added successfully',
             'student'    => $student,
@@ -137,15 +143,15 @@ class StudentController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/api/v1/students/student-detail",
+     *      path="/api/v1/students/student-detail/{guest_session_token}",
      *      tags={"Students"},
      *      summary="Data detail student yang melakukan prediksi",
      *      description="Data detail student sesuai dengan pengguna yang membuka website .",
      *      @OA\Response(
      *          response=200,
-     *          description="Successfully retrieved student",
+     *          description="Successfully retrieved data",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Successfully retrieved student"),
+     *              @OA\Property(property="message", type="string", example="Successfully retrieved data"),
      *              @OA\Property(property="student", type="object",
      *                  @OA\Property(property="id", type="integer", example=1),
      *                  @OA\Property(property="name", type="string", example="John Doe"),
@@ -153,16 +159,17 @@ class StudentController extends Controller
      *                  @OA\Property(property="gender", type="string", example="male"),
      *                  @OA\Property(property="education", type="string", example="SMA"),
      *                  @OA\Property(property="user_id", type="integer", example=1, nullable=true),
+     *                  @OA\Property(property="guest_session_token", type="string", example="eb68fc6f-173f-4cbe-a710-780c1cfc21cd", nullable=true),
      *                  @OA\Property(property="created_at", type="string", format="date-time"),
      *                  @OA\Property(property="updated_at", type="string", format="date-time")
      *              )
      *          )
      *      ),
      *      @OA\Response(
-     *          response=401,
-     *          description="Gagal mengambil data",
+     *          response=404,
+     *          description="Data not found",
      *          @OA\JsonContent(
-     *              @OA\Property(property="error", type="string", example="Gagal mengambil data")
+     *              @OA\Property(property="error", type="string", example="Data not found")
      *          )
      *      )
      * )
@@ -212,6 +219,12 @@ class StudentController extends Controller
     public function showStudentForGuest()
     {
         $student = $this->studentService->getStudentData();
+
+        if (! $student) {
+            return response()->json([
+                'message' => 'Data not found'
+            ], status: 404);
+        }
 
         return response()->json([
             'message' => 'Successfully retrieved student',

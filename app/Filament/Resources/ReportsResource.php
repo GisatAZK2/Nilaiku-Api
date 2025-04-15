@@ -31,7 +31,6 @@ class ReportsResource extends Resource
     {
        return false;
     }
-   
 
     public static function table(Table $table): Table
     {

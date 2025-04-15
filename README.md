@@ -56,13 +56,13 @@ Install my-project with npm
 ```bash
   git clone https://github.com/GisatAZK2/Nilaiku-Api
   cd my-project
-
-  npm install my-project
 ```
 Install composer
 
 ```bash
   composer install
+
+  cp .env.example .env
 ```
 
 ```bash
@@ -93,6 +93,8 @@ API docs, to access http://127.0.0.1:8000/api/documentation
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file for dev
+
+`DB_DATABASE=<sesuaikan nama db dengan yang anda buat>`
 
 `L5_SWAGGER_GENERATE_ALWAYS=true`
 
