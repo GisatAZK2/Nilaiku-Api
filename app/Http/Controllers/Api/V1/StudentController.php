@@ -167,6 +167,48 @@ class StudentController extends Controller
      *      )
      * )
      */
+    
+    /**
+     * @OA\Put(
+     *     path="/api/v1/students/student-update/{id}",
+     *     tags={"Students"},
+     *     summary="Update data student (guest atau user)",
+     *     description="Mengubah data student berdasarkan guest session atau user yang login.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID dari student yang ingin diupdate",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "age", "gender", "education"},
+     *             @OA\Property(property="name", type="string", example="Jane Doe"),
+     *             @OA\Property(property="age", type="integer", example=21),
+     *             @OA\Property(property="gender", type="string", enum={"male", "female"}, example="female"),
+     *             @OA\Property(property="education", type="string", example="SMK Cibitung 1")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Student updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Student updated successfully"),
+     *             @OA\Property(property="student", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Student not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Student not found")
+     *         )
+     *     )
+     * )
+    */
+
     public function showStudentForGuest()
     {
         $student = $this->studentService->getStudentData();
@@ -175,5 +217,28 @@ class StudentController extends Controller
             'message' => 'Successfully retrieved student',
             'student'    => $student,
         ], status: 200);
+    }
+
+    public function updateStudent(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'gender' => 'required|in:male,female',
+            'education' => 'required|string|max:255',
+        ]);
+
+        $student = Student::find($id);
+
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $student->update($validated);
+
+        return response()->json([
+            'message' => 'Student updated successfully',
+            'student' => $student
+        ], 200);
     }
 }
