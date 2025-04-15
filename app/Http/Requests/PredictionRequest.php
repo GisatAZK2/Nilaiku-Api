@@ -54,7 +54,7 @@ class PredictionRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success' => false,
             'message' => 'The given data was invalid',
-            'errors' => $validator->errors(), 
-        ], 422)); 
+            'errors' => $validator->errors(),
+        ], 422));
     }
 }

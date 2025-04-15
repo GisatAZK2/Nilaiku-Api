@@ -185,6 +185,7 @@ class StudentController extends Controller
      * )
      */
     public function showStudentForGuest($id)
+
     {
         $student = $this->studentService->getStudentData($id);
 
@@ -243,9 +244,9 @@ class StudentController extends Controller
     public function updateStudent(Request $request, $id)
     {
         $validated = $request->validate([
-            'name'      => 'required|string|max:255',
-            'age'       => 'required|integer',
-            'gender'    => 'required|in:male,female',
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'gender' => 'required|in:male,female',
             'education' => 'required|string|max:255',
         ]);
 
