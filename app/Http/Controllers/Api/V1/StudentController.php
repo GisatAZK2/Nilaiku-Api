@@ -1,22 +1,23 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StudentRequest;
-use App\Models\Student;
 use App\Models\User;
-use App\Services\StudentService;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Session;
+use App\Models\Student;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StudentRequest;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Routing\Controllers\Middleware;
+use App\Services\StudentService;
 
 class StudentController extends Controller
 {
     protected $studentService;
 
-    public function __construct(StudentService $studentService)
-    {
+    public function __construct(StudentService $studentService) {
         $this->studentService = $studentService;
     }
 
@@ -39,9 +40,9 @@ class StudentController extends Controller
             $student = Student::where('guest_session_token', session('guest_session_token'))->first();
         } else {
             $guestToken = Str::random(32);
-            $student    = Student::create([
+            $student = Student::create([
                 'guest_session_token' => $guestToken,
-                'is_guest'            => true,
+                'is_guest' => true
             ]);
             session(['guest_session_token' => $guestToken]);
         }
@@ -130,13 +131,13 @@ class StudentController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Error',
+                'message' => 'Error'
             ], 401);
         }
 
         return response()->json([
             'message' => 'Student added successfully',
-            'student' => $student,
+            'student'    => $student,
         ], 201);
     }
 
@@ -191,15 +192,16 @@ class StudentController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Data not found',
+                'message' => 'Data not found'
             ], status: 404);
         }
 
         return response()->json([
             'message' => 'Successfully retrieved student',
-            'student' => $student,
+            'student'    => $student,
         ], status: 200);
     }
+<<<<<<< HEAD
 
     /**
       * @OA\Put(
@@ -263,4 +265,6 @@ class StudentController extends Controller
             'student' => $student,
         ], 200);
     }
+=======
+>>>>>>> parent of f1798b2 (Merge branch 'main' of https://github.com/RidyCh/api.nilaiku)
 }

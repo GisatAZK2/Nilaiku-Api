@@ -109,9 +109,7 @@ class PredictionController extends Controller
         $responseModel = $this->predictionService->getPrediction($dataPrediction);
 
         if (isset($responseModel['error'])) {
-            return response()->json([
-                'error' => $responseModel['error']
-            ], 500);
+            return response()->json(['error' => $responseModel['error']], 500);
         }
 
         // Predict Result
@@ -154,69 +152,5 @@ class PredictionController extends Controller
         }
 
         return 'Excellent performance';
-    }
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/predict/academic-record/{student_id}",
-     *      tags={"Predict"},
-     *      summary="Data detail prediksi berdasarkan ID student",
-     *      description="Mengembalikan data detail prediksi berdasarkan ID student yang melakukan prediksi.",
-     *      @OA\Parameter(
-     *          in="path",
-     *          name="student_id",
-     *          required=true,
-     *          description="ID student",
-     *          @OA\Schema(
-     *              type="integer",
-     *              format="int64",
-     *              example=1
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successfully retrieved data",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="string", example="Successfully retrieved data"),
-     *              @OA\Property(property="prediction", type="object",
-     *                  @OA\Property(property="id", type="integer", example=1),
-     *                  @OA\Property(property="student_id", type="integer", example=1),
-     *                  @OA\Property(property="subject_id", type="integer", example=1),
-     *                  @OA\Property(property="input_date", type="string", format="date-time", example="2025-04-11T08:31:54.812441Z"),
-     *                  @OA\Property(property="attendance", type="integer", example=0),
-     *                  @OA\Property(property="hours_studied", type="float", example=0),
-     *                  @OA\Property(property="previous_scores", type="float", example=0),
-     *                  @OA\Property(property="sleep_hours", type="float", example=0),
-     *                  @OA\Property(property="tutoring_sessions", type="integer", example=0),
-     *                  @OA\Property(property="peer_influence", type="string", example="negative"),
-     *                  @OA\Property(property="motivation_level", type="string", example="low"),
-     *                  @OA\Property(property="teacher_quality", type="string", example="low"),
-     *                  @OA\Property(property="access_to_resources", type="string", example="low"),
-     *                  @OA\Property(property="predicted_score", type="number", format="float", example=85.58453369140625),
-     *                  @OA\Property(property="recommendation", type="string", example="Excellent performance")
-     *              )
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Data not found",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="error", type="string", example="Data not found")
-     *          )
-     *      )
-     * )
-    */
-    public function showAcademicRecordByStudentId($studentId)
-    {
-        $academicRecord = $this->predictionService->getAcademicRecordData($studentId);
-
-        if (! $academicRecord) {
-            return response()->json(['error' => 'Data not found'], 404);
-        }
-
-        return response()->json([
-            'message' => 'Successfully retrieved data',
-            'record' => $academicRecord
-        ], 200);
     }
 }
