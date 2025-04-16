@@ -14,18 +14,7 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedOrigins = [
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
-            'http://localhost:5173',
-            'http://127.0.0.1:5173',
-            'http://localhost:5174',
-            'http://127.0.0.1:5174',
-            'http://localhost:8000',
-            'http://127.0.0.1:8000',
-            'https://nilaiku.vercel.app',
-            'https://nilaiku-api.up.railway.app',
-        ];
+        $allowedOrigins = ['*'];
 
         $origin = $request->headers->get('Origin');
 
@@ -39,9 +28,9 @@ class CorsMiddleware
             $headers['Access-Control-Allow-Origin'] = $origin;
         }
 
-        if ($request->getMethod() === "OPTIONS") {
-            return response()->json('', 200, $headers);
-        }
+        // if ($request->getMethod() === "OPTIONS") {
+        //     return response()->json('', 200, $headers);
+        // }
 
         $response = $next($request);
 

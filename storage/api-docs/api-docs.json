@@ -843,14 +843,16 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/v1/students/{id}/edit": {
             "put": {
                 "tags": [
                     "Students"
                 ],
                 "summary": "Update data student (guest atau user)",
                 "description": "Mengubah data student berdasarkan guest session atau user yang login.",
-                "operationId": "f75661568c0155b220ef5fdbe5b8f85b",
+                "operationId": "2aca7debe6e01a408bd9256b51917e51",
                 "parameters": [
                     {
                         "name": "id",

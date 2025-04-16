@@ -204,7 +204,7 @@ class StudentController extends Controller
 
     /**
       * @OA\Put(
-      *     path="/api/v1/students/{id}",
+      *     path="/api/v1/students/{id}/edit",
       *     tags={"Students"},
       *     summary="Update data student (guest atau user)",
       *     description="Mengubah data student berdasarkan guest session atau user yang login.",
