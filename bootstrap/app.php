@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(\App\Http\Middleware\CorsMiddleware::class);
-        $middleware->append(\App\Http\Middleware\ForceHttps::class);
+        // $middleware->append(\App\Http\Middleware\ForceHttps::class);
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions) {

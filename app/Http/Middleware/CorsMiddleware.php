@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -14,23 +15,19 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedOrigins = ['*'];
-
         $origin = $request->headers->get('Origin');
 
         $headers = [
-            'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
             'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, X-Requested-With',
-            'Access-Control-Allow-Credentials' => 'true',
+            'Access-Control-Max-Age' => '86400', 
         ];
 
-        if (in_array($origin, $allowedOrigins)) {
-            $headers['Access-Control-Allow-Origin'] = $origin;
+        // Handle preflight request
+        if ($request->getMethod() === 'OPTIONS') {
+            return response()->noContent(204)->withHeaders($headers);
         }
-
-        // if ($request->getMethod() === "OPTIONS") {
-        //     return response()->json('', 200, $headers);
-        // }
 
         $response = $next($request);
 
