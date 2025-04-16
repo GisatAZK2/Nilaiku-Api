@@ -24,9 +24,6 @@ Route::post('/feedbacks', [FeedbackController::class, 'store']);
 Route::post('/report', [ReportController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/students/private', [StudentController::class, 'index']);
 
-// Route::options('/{any}', function () {
-//     return response()->json(['message' => 'OK'])
-//         ->header('Access-Control-Allow-Origin', ['*'])
-//         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-//         ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With');
-// })->where('any', '.*');
+Route::options('{any}', function () {
+    return response()->noContent();
+})->where('any', '.*');

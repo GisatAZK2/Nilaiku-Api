@@ -22,10 +22,11 @@ class CorsMiddleware
             'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
             'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, X-Requested-With',
             'Access-Control-Max-Age' => '86400', 
+            'Vary' => 'Origin', 
         ];
 
         // Handle preflight request
-        if ($request->getMethod() === 'OPTIONS') {
+        if ($request->isMethod('OPTIONS')) {
             return response()->noContent(204)->withHeaders($headers);
         }
 
